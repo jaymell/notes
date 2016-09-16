@@ -24,3 +24,11 @@ agent/tcs/client/client.go
       "This is indeed an ECS API intended only for the Agent's use. ...
        The Agent calls it via the tcs package here over the client/protocol defined in the wsclient package here."
 
+agent/handlers/v1_handlers.go
+### routes are registered here:
+func setupServer(containerInstanceArn *string, taskEngine DockerStateResolver, cfg *config.Config) http.Server {
+    serverFunctions := map[string]func(w http.ResponseWriter, r *http.Request){
+        "/v1/metadata": metadataV1RequestHandlerMaker(containerInstanceArn, cfg),
+        "/v1/tasks":    tasksV1RequestHandlerMaker(taskEngine),
+        "/license":     licenseHandler,
+    }
